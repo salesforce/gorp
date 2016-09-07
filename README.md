@@ -5,7 +5,7 @@ starting with an ordered set of regular expressions (a subset of the usual Java 
 more on this below),
 building a big [DFA](https://en.wikipedia.org/wiki/Deterministic_finite_automaton)
 using excellent [Automaton](http://www.brics.dk/automaton/), as well as complementary extractors
-for actual value extraction.
+ for actual value extraction.
 
 ## Basic operation
 
@@ -41,6 +41,7 @@ pattern %status \w+
 # Extraction
 extract HostDefinition {
   template @extractEndpoint($srcHost,$srcPort) $status(%status)
+}
 ```
 
 which shows both a simple template (no parameters), `@endpoint`, and parametric variant `@extractEndpoint`.
@@ -50,6 +51,12 @@ which shows both a simple template (no parameters), `@endpoint`, and parametric 
 Assuming you have file `extractions.xtr` which contains extraction definition (2), and wanted to extract values out of it, you could use:
 
 ```java
+import com.salesforce.gorp.DefinitionReader;
+import com.salesforce.gorp.ExtractionResult;
+import com.salesforce.gorp.Gorp;
+
+// ...
+
 DefinitionReader r = DefinitionReader.reader(new File("extractions.xtr"));
 Gorp gorp = r.read();
 final String TEST_INPUT = "prefix: time=12546778 verb=PUT";

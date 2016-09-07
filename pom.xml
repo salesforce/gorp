@@ -1,0 +1,198 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion> 
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>9</version>
+  </parent>
+
+  <groupId>com.salesforce.dva.transform</groupId>
+  <artifactId>gorp-base</artifactId>
+  <name>Gorp parent</name>
+  <version>0.9.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <description>Parent pom for components of Gorp package.
+  </description>
+
+  <modules>
+    <module>gorp-core</module>
+  </modules>
+
+  <url>https://github.com/salesforce/gorp</url>
+  <scm>
+    <connection>scm:git:git@github.com:salesforce/gorp.git</connection>
+    <developerConnection>scm:git:git@github.com:salesforce/gorp.git</developerConnection>
+    <url>https://github.com/salesforce/gorp</url>
+    <tag>HEAD</tag>
+  </scm>
+  <developers>
+    <developer>
+      <id>tatu</id>
+      <name>Tatu Saloranta</name>
+      <email>tatu.saloranta@salesforce.com</email>
+    </developer>
+  </developers>
+
+  <properties>
+    <javac.src.version>1.7</javac.src.version>
+    <javac.target.version>1.7</javac.target.version>
+    <version.jacksonjr>2.8.2</version.jacksonjr>
+    <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
+
+  </properties>
+
+  <!-- Licensing -->
+  <licenses>
+    <license>
+      <name>BSD 3-Clause License</name>
+      <url>https://opensource.org/licenses/BSD-3-Clause</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>${javac.src.version}</source>
+          <target>${javac.target.version}</target>
+        </configuration>
+      </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-release-plugin</artifactId>
+            <version>2.4.3</version>
+            <configuration>
+                <mavenExecutorId>forked-path</mavenExecutorId>
+            </configuration>
+        </plugin>
+        <plugin><!-- plug-in to attach source bundle in repo -->
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>2.1.2</version>
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${maven-surefire-plugin.version}</version>
+            <configuration>
+                <reportNameSuffix>UTEST</reportNameSuffix>
+            </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>2.8.1</version>
+          <configuration>
+	    <!-- Only works on Java 8; so release must be with JDK8: -->
+<!--
+            <additionalparam>-Xdoclint:none</additionalparam>
+-->
+            <source>${javac.src.version}</source>
+            <target>${javac.target.version}</target>
+            <encoding>UTF-8</encoding>
+            <failOnError>false</failOnError>
+            <links>
+              <link>http://docs.oracle.com/javase/7/docs/api/</link>
+            </links>
+          </configuration>
+          <executions>
+            <execution>
+              <id>attach-javadocs</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <!-- Plus, let's make jars OSGi bundles as well  -->
+        <plugin>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>maven-bundle-plugin</artifactId>
+          <version>2.5.3</version>
+          <extensions>true</extensions>
+          <configuration>
+            <instructions>
+              <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+              <Bundle-Vendor>salesforce.com</Bundle-Vendor>
+              <Import-Package>*</Import-Package>
+              <Export-Package>com.salesforce.*;version=${project.version}</Export-Package>
+            </instructions>
+          </configuration>
+        </plugin>
+
+        <!-- 24-Mar-2016, tatu: Needed because Strata (https://dva-ci.internal.salesforce.com)
+           fails build without it.
+          -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>createDummyTargetClassesDir</id>
+                        <phase>test</phase>
+                        <configuration>
+                            <tasks>
+                                <mkdir dir="${project.basedir}/target/classes" />
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+    </plugins>
+
+  </build>
+  <profiles>
+    <profile>
+      <id>release-sign-artifacts</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.1</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+  <!-- NOTE: repositories from parent POM -->
+</project>

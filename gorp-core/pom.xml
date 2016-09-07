@@ -1,0 +1,77 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion> 
+  <parent>
+    <groupId>com.salesforce.dva.transform</groupId>
+    <artifactId>gorp-base</artifactId>
+    <version>0.9.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>gorp-core</artifactId>
+  <name>Gorp: core</name>
+  <packaging>bundle</packaging>
+  <description>Core package for building efficient DFA-based extractor to use for extracting data from
+loosely structured input like loglines; handles parsing of input definition and building of the extractor.
+  </description>
+
+  <properties>
+    <!-- 24-Nov-2015, tatu: for a bit thought I'd need to manually specify exports;
+probably won't but leaving here just in case
+    -->
+    <osgi.export>com.salesforce.gorp.*;version=${project.version}
+    </osgi.export>
+
+  </properties>
+
+  <dependencies>
+    <!-- Automaton for efficient multi-regexp matching -->
+    <dependency>
+      <groupId>dk.brics.automaton</groupId>
+      <artifactId>automaton</artifactId>
+      <version>1.11-8</version>
+    </dependency>
+
+    <!-- Jackson-jr for appending properties
+      -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.jr</groupId>
+      <artifactId>jackson-jr-all</artifactId>
+      <version>${version.jacksonjr}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+       <plugin>
+        <!--  We will shade ASM, to simplify deployment, avoid version conflicts -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.4.2</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <artifactSet>
+                <includes>
+                  <include>dk.brics.automaton:automaton</include>
+                  <include>com.fasterxml.jackson.jr:jackson-jr-all</include>
+                </includes>
+              </artifactSet>
+              <relocations>
+                <relocation>
+                  <pattern>dk.brics.automaton</pattern>
+                  <shadedPattern>com.salesforce.gorp.shaded.automaton</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.fasterxml.jackson.jr</pattern>
+                  <shadedPattern>com.salesforce.gorp.shaded.jacksonjr</shadedPattern>
+                </relocation>
+              </relocations>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,23 @@
+### First, let's define basic patterns using "patterns" (regexps)
+
+# inline whitespace is understood, but for more explicit usage may also define:
+pattern %ws \s+
+pattern %optws \s*
+# 'phrase' means non-space-sequence of characters; 'word' letters; 'num' digits
+pattern %word \w+
+pattern %phrase \S+
+pattern %num \d+
+# more semantic macros, loosely defined
+pattern %ts %phrase
+pattern %ip %phrase
+# may need basic "rest of content" matcher too
+pattern %any .*
+
+# then possible "templates", building blocks that consist of named patterns, literal text and possible embedded
+# "anonymous" patterns (enclosed in %{....} and neither parsed (to substituted) nor escaped (like literal text))
+
+template @base <%num>$eventTimeStamp(%ts)
+
+extract sampleMatch {
+  template @base ($authStatus(Accepted)) 
+}
