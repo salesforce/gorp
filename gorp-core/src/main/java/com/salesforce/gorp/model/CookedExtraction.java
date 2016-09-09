@@ -6,42 +6,33 @@
  */
 package com.salesforce.gorp.model;
 
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import com.salesforce.gorp.ExtractionResult;
 import com.salesforce.gorp.io.InputLine;
 
-public class CookedExtraction
+/**
+ * Base API for "cooked" (fully processed) extraction rule, to be implemented by
+ * implementation classes using concrete regular expression packages.
+ */
+public abstract class CookedExtraction
 {
     protected final InputLine _source;
     protected final String _name;
     protected final Map<String,Object> _append;
 
-    protected final Pattern _regexp;
     protected final String _regexpSource;
     protected final String[] _extractorNames;
 
     protected CookedExtraction(InputLine source, String name,
             int index, Map<String,Object> append,
-            Pattern regexp, String regexpSource, String[] extractorNames)
+            String regexpSource, String[] extractorNames)
     {
         _source = source;
         _name = name;
         _append = append;
-        _regexp = regexp;
         _regexpSource = regexpSource;
         _extractorNames = extractorNames;
-    }
-
-    public static CookedExtraction construct(int index, FlattenedExtraction src,
-            Pattern regexp, String regexpSource, List<String> extractorNamesList)
-    {
-        String[] extrNames = extractorNamesList.toArray(new String[extractorNamesList.size()]);
-        return new CookedExtraction(src._source, src._name,
-                index, src._append,
-                regexp, regexpSource, extrNames);
     }
 
     public String getName() {
@@ -52,16 +43,8 @@ public class CookedExtraction
         return _append;
     }
 
-    public Pattern getRegexp() {
-        return _regexp;
-    }
-
     public String getRegexpSource() {
         return _regexpSource;
-    }
-
-    public String getRegexpDesc() {
-        return _regexp.pattern();
     }
 
     /**
@@ -72,4 +55,12 @@ public class CookedExtraction
     {
         return new ExtractionResult(getName(), input, this, _extractorNames, values);
     }
+
+    // // // // Abstract methods for sub-classes to implement
+
+    public abstract ExtractionResult match(String input);
+
+    public abstract Object getRegexp();
+    
+    public abstract String getRegexpDesc();
 }

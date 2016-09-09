@@ -42,4 +42,16 @@ public class FlattenedExtraction
     public List<String> getExtractorNames() {
         return _extractorNames;
     }
+
+    public InputLine getSource() {
+        return _source;
+    }
+
+    public String getName() {
+        return _name;
+    }
+
+    public Map<String,Object> getAppends() {
+        return _append;
+    }
 }

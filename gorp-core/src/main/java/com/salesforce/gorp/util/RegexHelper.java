@@ -14,9 +14,12 @@ public class RegexHelper
 
     public static String quoteLiteralAsRegexp(String text)
     {
+        return quoteLiteralAsRegexp(text, new StringBuilder(text.length() + 8)).toString();
+    }
+
+    public static StringBuilder quoteLiteralAsRegexp(String text, StringBuilder sb)
+    {
         final int end = text.length();
-        
-        StringBuilder sb = new StringBuilder(end + 8);
 
         for (int i = 0; i < end; ) {
             char c = text.charAt(i++);
@@ -63,7 +66,7 @@ public class RegexHelper
                 sb.append(c);
             }
         }
-        return sb.toString();
+        return sb;
     }
 
     // for tests
