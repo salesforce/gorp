@@ -5,7 +5,7 @@ starting with an ordered set of regular expressions (a subset of the usual Java 
 more on this below),
 building a big [DFA](https://en.wikipedia.org/wiki/Deterministic_finite_automaton)
 using excellent [Automaton](http://www.brics.dk/automaton/), as well as complementary extractors
- for actual value extraction.
+for actual value extraction.
 
 ## Basic operation
 
