@@ -9,7 +9,7 @@
   <groupId>com.salesforce.gorp</groupId>
   <artifactId>gorp-base</artifactId>
   <name>Gorp parent</name>
-  <version>0.9.0</version>
+  <version>0.9.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>Parent pom for components of Gorp package.
   </description>
