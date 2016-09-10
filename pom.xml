@@ -9,7 +9,7 @@
   <groupId>com.salesforce.gorp</groupId>
   <artifactId>gorp-base</artifactId>
   <name>Gorp parent</name>
-  <version>0.9.0-SNAPSHOT</version>
+  <version>0.9.0</version>
   <packaging>pom</packaging>
   <description>Parent pom for components of Gorp package.
   </description>
@@ -23,7 +23,7 @@
     <connection>scm:git:git@github.com:salesforce/gorp.git</connection>
     <developerConnection>scm:git:git@github.com:salesforce/gorp.git</developerConnection>
     <url>https://github.com/salesforce/gorp</url>
-    <tag>HEAD</tag>
+    <tag>gorp-base-0.9.0</tag>
   </scm>
   <developers>
     <developer>
