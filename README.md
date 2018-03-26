@@ -7,6 +7,10 @@ building a big [DFA](https://en.wikipedia.org/wiki/Deterministic_finite_automato
 using excellent [Automaton](http://www.brics.dk/automaton/), as well as complementary extractors
 for actual value extraction.
 
+In addition to `Automaton` itself, code relies on part of
+[multiregexp](https://github.com/fulmicoton/multiregexp) package for actual combination of multiple
+expressions.
+
 ## Basic operation
 
 To use Gorp, you need three things:
