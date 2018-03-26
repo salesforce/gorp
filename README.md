@@ -10,6 +10,12 @@ for actual value extraction.
 In addition to `Automaton` itself, code relies on part of
 [multiregexp](https://github.com/fulmicoton/multiregexp) package for actual combination of multiple
 expressions.
+For more information on `multiregexp`, please see [this blog post](https://fulmicoton.com/posts/multiregexp/).
+
+Gorp itself builds further upon these 2 libraries, adding:
+
+1. Ability to not only match regular expressions, but extract data
+2. Defines extractors using a Domain-Specific Language (DSL) that allows modular, (more) readable source definitions
 
 ## Basic operation
 

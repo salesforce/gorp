@@ -13,7 +13,10 @@ import java.util.List;
 import dk.brics.automaton.Automaton;
 import dk.brics.automaton.RegExp;
 
-//Note: Copied from Multiregexp package
+/**
+ * Helper class for constructing actual {@link Automata} from multiple pattern definitions
+ * which at this point are parseable by `Automaton` package.
+ */
 public class PolyMatcher
 {
     private final int[] NO_MATCH = {};

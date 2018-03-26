@@ -13,6 +13,10 @@ import dk.brics.automaton.State;
 
 /**
  * Abstraction for the state machine constructed from multiple {@link Automaton}s.
+ *<p>
+ * Based on code from `multiregexp` package's `MultiPatternAutomaton`:
+ *<br />
+ * https://github.com/fulmicoton/multiregexp
  */
 public class Automata
 {
